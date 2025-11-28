@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!--  translate="label" =>  if a translation exists for this label it should be used-->
+        <tab id="custom_tab"
+             translate="label"
+             sortOrder="100">
+            <label>Custom Extensions</label>
+        </tab>
+        <section id="admin_logger" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Admin Action Logger</label>
+            <tab>custom_tab</tab>
+            <resource>MyCompany_AdminLogger::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Enable Logging</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="retention_days" translate="label" type="text" sortOrder="20" showInDefault="1">
+                    <label>Log Retention (Days)</label>
+                    <comment>Logs older than this will be deleted automatically.</comment>
+                    <validate>validate-digits</validate>
+                </field>
+                <field id="logged_actions" translate="label" type="multiselect" sortOrder="30" showInDefault="1">
+                    <label>Log Actions</label>
+                    <source_model>MyCompany\AdminLogger\Model\Config\Source\Actions</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="logged_entities" translate="label" type="multiselect" sortOrder="40" showInDefault="1">
+                    <label>Log Entities</label>
+                    <source_model>MyCompany\AdminLogger\Model\Config\Source\Entities</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

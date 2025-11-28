@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- 1. Product Save Observer -->
+    <virtualType name="MyCompany\AdminLogger\Observer\ProductSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">product</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 2. Product Delete Observer -->
+    <virtualType name="MyCompany\AdminLogger\Observer\ProductDelete" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">delete</argument>
+            <argument name="entityType" xsi:type="string">product</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 3. Category Save Observer -->
+    <virtualType name="MyCompany\AdminLogger\Observer\CategorySave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">category</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 4. Customer Save Observer -->
+    <virtualType name="MyCompany\AdminLogger\Observer\CustomerSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">customer</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 5. Product Edit (Controller) Observer -->
+    <virtualType name="MyCompany\AdminLogger\Observer\ProductEdit" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">edit</argument>
+            <argument name="entityType" xsi:type="string">product</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mycompany_adminlogger_log_listing_data_source" xsi:type="string">MyCompany\AdminLogger\Model\ResourceModel\ActionLog\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- 2. Definim Colectia Virtuala pentru Grid (SearchResult) -->
+    <!-- Aceasta permite filtrarea si sortarea in tabel -->
+    <virtualType name="MyCompany\AdminLogger\Model\ResourceModel\ActionLog\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">my_company_admin_action_log</argument>
+            <argument name="resourceModel" xsi:type="string">MyCompany\AdminLogger\Model\ResourceModel\ActionLog</argument>
+        </arguments>
+    </virtualType>
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="MyCompany_AdminLogger::logs"
+             title="Admin Activity Logs"
+             module="MyCompany_AdminLogger"
+             sortOrder="90"
+             parent="Magento_Backend::system"
+             resource="MyCompany_AdminLogger::logs"/>
+
+        <add id="MyCompany_AdminLogger::view"
+             title="View Logs"
+             module="MyCompany_AdminLogger"
+             sortOrder="10"
+             parent="MyCompany_AdminLogger::logs"
+             action="mycompany_adminlogger/log/index"
+             resource="MyCompany_AdminLogger::logs"/>
+    </menu>
+</config>

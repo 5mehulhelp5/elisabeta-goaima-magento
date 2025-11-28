@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+
+    <!-- Product Events -->
+    <event name="catalog_product_save_after">
+        <observer name="mycompany_logger_product_save" instance="MyCompany\AdminLogger\Observer\ProductSave" />
+    </event>
+    <event name="catalog_product_delete_after">
+        <observer name="mycompany_logger_product_delete" instance="MyCompany\AdminLogger\Observer\ProductDelete" />
+    </event>
+
+    <!-- Category Events -->
+    <event name="catalog_category_save_after">
+        <observer name="mycompany_logger_category_save" instance="MyCompany\AdminLogger\Observer\CategorySave" />
+    </event>
+
+    <!-- Customer Events -->
+    <event name="customer_save_after">
+        <observer name="mycompany_logger_customer_save" instance="MyCompany\AdminLogger\Observer\CustomerSave" />
+    </event>
+
+    <!-- Edit Events -->
+    <event name="controller_action_postdispatch_adminhtml_catalog_product_edit">
+        <observer name="mycompany_logger_product_edit" instance="MyCompany\AdminLogger\Observer\ProductEdit" />
+    </event>
+
+</config>
