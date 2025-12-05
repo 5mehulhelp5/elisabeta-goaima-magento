@@ -32,4 +32,82 @@
             <argument name="entityType" xsi:type="string">product</argument>
         </arguments>
     </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CategorySave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">category</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CustomerSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">customer</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\ProductEdit" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">edit</argument>
+            <argument name="entityType" xsi:type="string">product</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\OrderSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">order</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CmsPageSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">cms_page</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CmsPageDelete" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">delete</argument>
+            <argument name="entityType" xsi:type="string">cms_page</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CategoryDelete" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">delete</argument>
+            <argument name="entityType" xsi:type="string">category</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CategoryEdit" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">edit</argument>
+            <argument name="entityType" xsi:type="string">category</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CustomerDelete" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">delete</argument>
+            <argument name="entityType" xsi:type="string">customer</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CustomerEdit" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">edit</argument>
+            <argument name="entityType" xsi:type="string">customer</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\OrderView" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">view</argument>
+            <argument name="entityType" xsi:type="string">order</argument>
+        </arguments>
+    </virtualType>
+
 </config>

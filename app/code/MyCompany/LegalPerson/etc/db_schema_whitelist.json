@@ -1,0 +1,14 @@
+{
+    "quote_address": {
+        "column": {
+            "legal_cui": true,
+            "legal_company": true
+        }
+    },
+    "sales_order_address": {
+        "column": {
+            "legal_cui": true,
+            "legal_company": true
+        }
+    }
+}  

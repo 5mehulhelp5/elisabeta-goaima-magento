@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <customer>
+            <address_templates>
+                <text>{{depend prefix}}{{var prefix}} {{/depend}}{{depend firstname}}{{var firstname}} {{/depend}}{{depend middlename}}{{var middlename}} {{/depend}}{{depend lastname}}{{var lastname}} {{/depend}}{{depend suffix}}{{var suffix}} {{/depend}}
+                    {{depend legal_company}}PJ: {{var legal_company}}{{/depend}}
+                    {{depend legal_cui}}CUI: {{var legal_cui}}{{/depend}}
+                    {{if street1}}{{var street1}}
+                    {{/if}}
+                    {{depend city}}{{var city}},  {{/depend}}{{depend region}}{{var region}}, {{/depend}}{{depend postcode}}{{var postcode}}{{/depend}}
+                    {{depend country_name}}{{var country_name}}{{/depend}}
+                    T: {{depend telephone}}{{var telephone}}{{/depend}}
+                    {{depend fax}}F: {{var fax}}{{/depend}}
+                    {{depend vat_id}}VAT: {{var vat_id}}{{/depend}}</text>
+                <html><![CDATA[
+{{depend prefix}}{{var prefix}} {{/depend}}{{depend firstname}}{{var firstname}} {{/depend}}{{depend middlename}}{{var middlename}} {{/depend}}{{depend lastname}}{{var lastname}} {{/depend}}{{depend suffix}}{{var suffix}} {{/depend}}<br/>
+{{depend legal_company}}<strong>Companie:</strong> {{var legal_company}}<br/>{{/depend}}
+{{depend legal_cui}}<strong>CUI:</strong> {{var legal_cui}}<br/>{{/depend}}
+{{if street1}}{{var street1}}<br/>{{/if}}
+{{if street2}}{{var street2}}<br/>{{/if}}
+{{if street3}}{{var street3}}<br/>{{/if}}
+{{if street4}}{{var street4}}<br/>{{/if}}
+{{depend city}}{{var city}},  {{/depend}}{{depend region}}{{var region}}, {{/depend}}{{depend postcode}}{{var postcode}}{{/depend}}<br/>
+{{depend country_name}}{{var country_name}}{{/depend}}<br/>
+{{depend telephone}}T: <a href="tel:{{var telephone}}">{{var telephone}}</a>{{/depend}}
+{{depend fax}}<br/>F: {{var fax}}{{/depend}}
+{{depend vat_id}}<br/>VAT: {{var vat_id}}{{/depend}}]]></html>
+            </address_templates>
+        </customer>
+    </default>
+</config>

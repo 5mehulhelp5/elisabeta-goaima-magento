@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="save_legal_person_data" type="MyCompany\LegalPerson\Plugin\Checkout\Model\ShippingInformationManagement" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Checkout\Model\PaymentInformationManagement">
+        <plugin name="save_legal_person_billing_data" type="MyCompany\LegalPerson\Plugin\Checkout\Model\PaymentInformationManagement" sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Checkout\Model\GuestPaymentInformationManagement">
+        <plugin name="save_legal_person_guest_billing_data" type="MyCompany\LegalPerson\Plugin\Checkout\Model\GuestPaymentInformationManagement" sortOrder="10"/>
+    </type>
+</config>
