@@ -2,7 +2,7 @@
 /** @var \Magento\Customer\Block\Address\Edit $block */
 $company = $block->getAddress()->getCustomAttribute('legal_company') ? $block->getAddress()->getCustomAttribute('legal_company')->getValue() : '';
 $cui = $block->getAddress()->getCustomAttribute('legal_cui') ? $block->getAddress()->getCustomAttribute('legal_cui')->getValue() : '';
-$isLegal = !empty($cui); // Daca avem CUI, consideram ca e bifat
+$isLegal = !empty($cui);
 ?>
 <form class="form-address-edit"
       action="<?= $block->escapeUrl($block->getSaveUrl()) ?>"
@@ -148,53 +148,76 @@ $isLegal = !empty($cui); // Daca avem CUI, consideram ca e bifat
         </div>
     </div>
 </form>
+<div class="field additional-details">
+    <div class="control" style="display: flex; gap: 10px; margin-top: 10px;">
+        <div style="flex:1">
+            <label class="label"><span><?= $block->escapeHtml(__('Numar')) ?></span></label>
+            <input type="text" name="street_number" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('street_number') ? $block->getAddress()->getCustomAttribute('street_number')->getValue() : '') ?>" class="input-text">
+        </div>
+        <div style="flex:1">
+            <label class="label"><span><?= $block->escapeHtml(__('Bloc')) ?></span></label>
+            <input type="text" name="building" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('building') ? $block->getAddress()->getCustomAttribute('building')->getValue() : '') ?>" class="input-text">
+        </div>
+        <div style="flex:1">
+            <label class="label"><span><?= $block->escapeHtml(__('Etaj')) ?></span></label>
+            <input type="text" name="floor" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('floor') ? $block->getAddress()->getCustomAttribute('floor')->getValue() : '') ?>" class="input-text">
+        </div>
+        <div style="flex:1">
+            <label class="label"><span><?= $block->escapeHtml(__('Apartament')) ?></span></label>
+            <input type="text" name="apartment" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('apartment') ? $block->getAddress()->getCustomAttribute('apartment')->getValue() : '') ?>" class="input-text">
+        </div>
+    </div>
+</div>
 
+<div class="field city required">
+    <label class="label" for="city"><span><?= $block->escapeHtml(__('City')) ?></span></label>
+    <div class="control">
+        <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
+               title="<?= $block->escapeHtmlAttr(__('City')) ?>"
+               class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city')) ?>"
+               id="city">
+
+        <select id="city_select" class="validate-select" style="display:none;">
+            <option value=""><?= __('Please select a city') ?></option>
+        </select>
+    </div>
+</div>
 <script>
-    require(['jquery', 'mage/mage'], function($){
+    require(['jquery', 'mage/url', 'mage/mage'], function($, url){
         var form = $('#form-validate');
         form.mage('validation', {});
 
-        // Logica Persoana Juridica
         var checkbox = $('#is_legal_checkbox');
         var legalFields = $('.legal-field');
         var legalInputs = $('.legal-field input');
 
-        // Elementele standard pe care le manipulam
         var firstname = $('input[name="firstname"]');
         var lastname = $('input[name="lastname"]');
-        var company = $('input[name="company"]'); // Selectorul pentru Company standard
+        var company = $('input[name="company"]');
 
         var firstnameContainer = firstname.closest('.field');
         var lastnameContainer = lastname.closest('.field');
-        var companyContainer = company.closest('.field'); // Containerul pentru Company standard
-
+        var companyContainer = company.closest('.field');
         var legalCompanyInput = $('#legal_company');
 
         function toggleLegal(isInitial) {
             if (checkbox.is(':checked')) {
-                // Mod Persoana Juridica Activat
                 legalFields.show();
                 legalInputs.addClass('required-entry');
 
-                // ASCUNDEM campurile standard: Nume, Prenume, Companie
                 firstnameContainer.hide();
                 lastnameContainer.hide();
-                companyContainer.hide(); // <-- ASCUNDEM COMPANIA STANDARD
+                companyContainer.hide();
 
-                // Setam valori dummy pentru validare daca sunt goale
                 if(!firstname.val()) firstname.val('Legal Entity');
-
             } else {
-                // Mod Persoana Fizica
                 legalFields.hide();
                 legalInputs.removeClass('required-entry');
 
-                // ARATAM campurile standard
                 firstnameContainer.show();
                 lastnameContainer.show();
-                companyContainer.show(); // <-- REAFISAM COMPANIA STANDARD
+                companyContainer.show();
 
-                // Curatam dummy data daca userul debifeaza
                 if (firstname.val() === 'Legal Entity') {
                     firstname.val('');
                     lastname.val('');
@@ -202,25 +225,66 @@ $isLegal = !empty($cui); // Daca avem CUI, consideram ca e bifat
             }
         }
 
-        // Auto-fill Lastname si Standard Company cu Numele Companiei Legale
         legalCompanyInput.on('input', function() {
             if (checkbox.is(':checked')) {
                 var val = $(this).val();
-
-                // 1. Punem valoarea in Lastname (pentru validarea Magento)
                 lastname.val(val);
-
-                // 2. Punem valoarea si in Company Standard (ascuns)
-                // Asta ajuta ca shipping-ul si alte module sa vada ca exista o companie
                 company.val(val);
-
                 if(firstname.val() !== 'Legal Entity') firstname.val('Legal Entity');
             }
         });
 
         checkbox.on('change', function() { toggleLegal(false); });
-
-        // Initializare la incarcarea paginii
         toggleLegal(true);
+
+        var regionSelect = $('#region_id');
+        var cityInput = $('#city');
+        var citySelect = $('#city_select');
+        var currentCity = '<?= $block->escapeJs($block->getAddress()->getCity()) ?>';
+
+        function loadCities(regionId) {
+            if(!regionId) return;
+
+            $.ajax({
+                url: url.build('legalperson/city/index'),
+                data: { region_id: regionId },
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if(data.length > 0) {
+                        citySelect.find('option:not(:first)').remove();
+                        $.each(data, function(index, item){
+                            citySelect.append($('<option>', {
+                                value: item.value,
+                                text: item.label,
+                                selected: (item.value == currentCity)
+                            }));
+                        });
+
+                        cityInput.hide();
+                        cityInput.prop('disabled', true);
+                        citySelect.show();
+                    } else {
+                        cityInput.show();
+                        cityInput.prop('disabled', false);
+                        citySelect.hide();
+                    }
+                }
+            });
+        }
+
+        regionSelect.on('change', function(){
+            loadCities($(this).val());
+        });
+
+        citySelect.on('change', function(){
+            cityInput.prop('disabled', false);
+            cityInput.val($(this).val());
+            cityInput.prop('disabled', true);
+        });
+
+        if(regionSelect.val()) {
+            loadCities(regionSelect.val());
+        }
     });
 </script>

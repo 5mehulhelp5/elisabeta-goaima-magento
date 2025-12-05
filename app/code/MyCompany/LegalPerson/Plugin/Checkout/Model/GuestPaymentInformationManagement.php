@@ -5,7 +5,7 @@ use Magento\Checkout\Api\GuestPaymentInformationManagementInterface;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Model\QuoteIdMaskFactory; // Necesar pentru a decoda ID-ul de Guest
+use Magento\Quote\Model\QuoteIdMaskFactory;
 use Magento\Quote\Model\ResourceModel\Quote\Address as AddressResource;
 use Magento\Quote\Model\Quote\AddressFactory;
 use Magento\Framework\Webapi\Rest\Request;
@@ -36,9 +36,6 @@ class GuestPaymentInformationManagement
         $this->request = $request;
     }
 
-    /**
-     * Plugin pentru Guest Checkout
-     */
     public function afterSavePaymentInformation(
         GuestPaymentInformationManagementInterface $subject,
                                                    $result,
@@ -50,7 +47,6 @@ class GuestPaymentInformationManagement
         $this->logger->info('LegalPerson GUEST Billing: START. MaskedID: ' . $cartId);
 
         try {
-            // Decodam Masked Quote ID in Integer ID
             $quoteIdMask = $this->quoteIdMaskFactory->create()->load($cartId, 'masked_id');
             $realCartId = $quoteIdMask->getQuoteId();
 
@@ -60,7 +56,6 @@ class GuestPaymentInformationManagement
             $cuiValue = null;
             $companyValue = null;
 
-            // 1. Extragere Date (Extension / Custom / Fallback JSON)
             if (!empty($billingData['extension_attributes'])) {
                 $ext = $billingData['extension_attributes'];
                 $cuiValue = $ext['legal_cui'] ?? null;
@@ -74,14 +69,8 @@ class GuestPaymentInformationManagement
                 }
             }
 
-            // 2. Fallback: Copiere de la Shipping (Fortam reincarcarea din DB)
             if (!$cuiValue && !$companyValue) {
-                $this->logger->info('LegalPerson GUEST: Copying from Shipping...');
-
-                // Incarcam Quote-ul
                 $quote = $this->cartRepository->getActive($realCartId);
-
-                // TRUC: Incarcam modelul adresei shipping direct din DB pentru a fi siguri ca avem datele salvate la pasul anterior
                 $shippingAddress = $quote->getShippingAddress();
                 if ($shippingAddress->getId()) {
                     $freshShipping = $this->quoteAddressFactory->create()->load($shippingAddress->getId());
@@ -90,9 +79,6 @@ class GuestPaymentInformationManagement
                 }
             }
 
-            $this->logger->info("LegalPerson GUEST Values: CUI: " . ($cuiValue ?? 'NULL'));
-
-            // 3. Salvare Fortata
             if ($cuiValue || $companyValue) {
                 $quote = $this->cartRepository->getActive($realCartId);
                 $quoteBillingAddress = $quote->getBillingAddress();
@@ -104,8 +90,6 @@ class GuestPaymentInformationManagement
                         $realBillingModel->setData('legal_cui', $cuiValue);
                         $realBillingModel->setData('legal_company', $companyValue);
                         $this->addressResource->save($realBillingModel);
-
-                        $this->logger->info("LegalPerson GUEST: SUCCESS - Saved.");
                     }
                 }
             }

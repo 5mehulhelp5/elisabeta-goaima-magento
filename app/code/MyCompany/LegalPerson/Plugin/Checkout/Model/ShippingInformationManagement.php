@@ -36,36 +36,40 @@ class ShippingInformationManagement
         $this->logger->info('LegalPerson: START processing CartID ' . $cartId);
 
         try {
-            // 1. Luam tot Request-ul Brut
             $bodyParams = $this->request->getBodyParams();
 
-            // DEBUG: Scriem TOT ce primim intr-un fisier separat pentru a fi 100% siguri
-            file_put_contents(BP . '/var/log/legal_payload.log', print_r($bodyParams, true));
+            $keys = [
+                'legal_cui',
+                'legal_company',
+                'street_number',
+                'building',
+                'floor',
+                'apartment'
+            ];
 
-            // 2. Cautare Recursiva (Gaseste cheia oriunde ar fi ea in JSON)
-            $cuiValue = $this->findValueRecursive($bodyParams, 'legal_cui');
-            $companyValue = $this->findValueRecursive($bodyParams, 'legal_company');
+            $dataToSave = [];
+            foreach ($keys as $key) {
+                $val = $this->findValueRecursive($bodyParams, $key);
+                if ($val) {
+                    $dataToSave[$key] = $val;
+                }
+            }
 
-            $this->logger->info("LegalPerson: Extracted Values - CUI: " . ($cuiValue ?? 'NULL') . ", Company: " . ($companyValue ?? 'NULL'));
-
-            // 3. Salvare Fortata
-            if ($cuiValue || $companyValue) {
+            if (!empty($dataToSave)) {
                 $quote = $this->cartRepository->getActive($cartId);
                 $shippingAddress = $quote->getShippingAddress();
 
                 if ($shippingAddress->getId()) {
-                    $shippingAddress->setData('legal_cui', $cuiValue);
-                    $shippingAddress->setData('legal_company', $companyValue);
-
-                    // Salvare directa in DB
+                    foreach ($dataToSave as $k => $v) {
+                        $shippingAddress->setData($k, $v);
+                    }
                     $this->addressResource->save($shippingAddress);
-
-                    $this->logger->info("LegalPerson: SUCCESS - Saved to DB via ResourceModel.");
+                    $this->logger->info("LegalPerson: SUCCESS - Saved attributes: " . implode(', ', array_keys($dataToSave)));
                 } else {
                     $this->logger->warning("LegalPerson: Shipping Address has no ID.");
                 }
             } else {
-                $this->logger->warning("LegalPerson: Values are still NULL after recursive search. Check var/log/legal_payload.log");
+                $this->logger->info("LegalPerson: No custom attributes found in payload.");
             }
 
         } catch (\Exception $e) {
@@ -76,8 +80,7 @@ class ShippingInformationManagement
     }
 
     /**
-     * Functie care cauta o cheie in orice adancime a array-ului
-     * Suporta si formatul Magento customAttributes: [{attribute_code: "x", value: "y"}]
+     * Cauta o cheie in array multidimensional (pentru ca structura payload-ului variaza)
      */
     private function findValueRecursive($array, $keySearch) {
         if (!is_array($array)) {
@@ -85,17 +88,14 @@ class ShippingInformationManagement
         }
 
         foreach ($array as $key => $value) {
-            // Cazul 1: Cheia este gasita direct (ex: in extension_attributes)
             if ($key === $keySearch && !is_array($value)) {
                 return $value;
             }
 
-            // Cazul 2: Formatul Custom Attributes (Array de obiecte)
             if (is_array($value) && isset($value['attribute_code']) && $value['attribute_code'] === $keySearch) {
                 return $value['value'] ?? null;
             }
 
-            // Cazul 3: Continuam cautarea in adancime
             if (is_array($value)) {
                 $result = $this->findValueRecursive($value, $keySearch);
                 if ($result) {

@@ -5,9 +5,19 @@ define([
 ], function ($, wrapper, quote) {
     'use strict';
 
+    /**
+     * Funcție auxiliară pentru a transforma City din Array în String
+     */
+    function normalizeCity(address) {
+        if (address && address.city && Array.isArray(address.city)) {
+            address.city = address.city.length ? address.city[0] : '';
+        }
+    }
+
     return function (setShippingInformationAction) {
         return wrapper.wrap(setShippingInformationAction, function (originalAction) {
             var shippingAddress = quote.shippingAddress();
+            var billingAddress = quote.billingAddress();
 
             if (!shippingAddress['extension_attributes']) {
                 shippingAddress['extension_attributes'] = {};
@@ -15,32 +25,45 @@ define([
 
             var cui = null;
             var company = null;
-
-            // 1. Cautam in input-urile vizibile (DOM) - Cea mai sigura metoda pentru Incognito/Manual
             var cuiInput = $('input[name*="legal_cui"]');
             var companyInput = $('input[name*="legal_company"]');
 
             if (cuiInput.length) cui = cuiInput.val();
             if (companyInput.length) company = companyInput.val();
 
-            // 2. Fallback: Cautam in obiectul existent (custom_attributes)
             if (!cui && shippingAddress['custom_attributes'] && shippingAddress['custom_attributes']['legal_cui']) {
-                var attr = shippingAddress['custom_attributes']['legal_cui'];
-                cui = (typeof attr === 'object' && attr.value) ? attr.value : attr;
+                var attrCui = shippingAddress['custom_attributes']['legal_cui'];
+                cui = (typeof attrCui === 'object' && attrCui.value) ? attrCui.value : attrCui;
             }
             if (!company && shippingAddress['custom_attributes'] && shippingAddress['custom_attributes']['legal_company']) {
-                var attr = shippingAddress['custom_attributes']['legal_company'];
-                company = (typeof attr === 'object' && attr.value) ? attr.value : attr;
+                var attrComp = shippingAddress['custom_attributes']['legal_company'];
+                company = (typeof attrComp === 'object' && attrComp.value) ? attrComp.value : attrComp;
             }
 
-            // 3. Setam valorile
             if (cui) shippingAddress['extension_attributes']['legal_cui'] = cui;
             if (company) shippingAddress['extension_attributes']['legal_company'] = company;
 
-            console.log('LegalPerson Mixin Data:', shippingAddress['extension_attributes']);
+            var streetNumber = $('input[name*="street_number"]').val();
+            var building = $('input[name*="building"]').val();
+            var floor = $('input[name*="floor"]').val();
+            var apartment = $('input[name*="apartment"]').val();
 
-            // TRUC: Fortam actualizarea obiectului quote
-            // Uneori modificarile "in-place" nu sunt detectate de Magento
+            if(streetNumber) shippingAddress['extension_attributes']['street_number'] = streetNumber;
+            if(building) shippingAddress['extension_attributes']['building'] = building;
+            if(floor) shippingAddress['extension_attributes']['floor'] = floor;
+            if(apartment) shippingAddress['extension_attributes']['apartment'] = apartment;
+
+            normalizeCity(shippingAddress);
+
+            if (billingAddress) {
+                normalizeCity(billingAddress);
+            }
+
+            console.log('Shipping City cleaned:', shippingAddress.city);
+            if (billingAddress) {
+                console.log('Billing City cleaned:', billingAddress.city);
+            }
+
             quote.shippingAddress(shippingAddress);
 
             return originalAction();

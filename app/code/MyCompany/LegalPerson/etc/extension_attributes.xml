@@ -3,18 +3,27 @@
     <extension_attributes for="Magento\Customer\Api\Data\AddressInterface">
         <attribute code="legal_cui" type="string" />
         <attribute code="legal_company" type="string" />
+        <attribute code="street_number" type="string" />
+        <attribute code="building" type="string" />
+        <attribute code="floor" type="string" />
+        <attribute code="apartment" type="string" />
     </extension_attributes>
 
     <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
         <attribute code="legal_cui" type="string" />
         <attribute code="legal_company" type="string" />
+        <attribute code="street_number" type="string" />
+        <attribute code="building" type="string" />
+        <attribute code="floor" type="string" />
+        <attribute code="apartment" type="string" />
     </extension_attributes>
 
     <extension_attributes for="Magento\Sales\Api\Data\OrderAddressInterface">
         <attribute code="legal_cui" type="string" />
         <attribute code="legal_company" type="string" />
+        <attribute code="street_number" type="string" />
+        <attribute code="building" type="string" />
+        <attribute code="floor" type="string" />
+        <attribute code="apartment" type="string" />
     </extension_attributes>
 </config>
-
-
-

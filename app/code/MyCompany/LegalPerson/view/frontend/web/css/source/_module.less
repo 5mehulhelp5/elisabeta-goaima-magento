@@ -1,0 +1,124 @@
+& when (@media-common = true) {
+    .checkout-index-index {
+
+        div[name$=".city"] {
+
+            .admin__action-multiselect-wrap {
+                width: 100% !important;
+                position: relative;
+                z-index: 100;
+
+                &._active {
+                    z-index: 101;
+                }
+            }
+
+            .action-select {
+                width: 100% !important;
+                height: 32px !important;
+                padding: 5px 10px !important;
+                background: #fff !important;
+                border: 1px solid #c2c2c2 !important;
+                border-radius: 1px !important;
+                color: #333 !important;
+                cursor: pointer;
+                text-align: left;
+                position: relative;
+
+                &:after {
+                    content: '\e622';
+                    font-family: 'luma-icons';
+                    position: absolute;
+                    right: 10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: #767676;
+                    font-size: 12px;
+                }
+            }
+
+            .admin__action-multiselect-menu-inner {
+                display: none !important;
+
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #fff !important;
+                border: 1px solid #c2c2c2 !important;
+                border-top: none !important;
+                max-height: 250px;
+                overflow-y: auto;
+                box-shadow: 0 5px 5px rgba(0,0,0,0.15);
+                margin-top: -1px;
+                padding: 0;
+                list-style: none;
+                text-align: left;
+            }
+
+            .admin__action-multiselect-wrap._active .admin__action-multiselect-menu-inner {
+                display: block !important;
+            }
+
+            .admin__action-multiselect-menu-item {
+                padding: 8px 10px !important;
+                margin: 0 !important;
+                cursor: pointer;
+
+                color: #333 !important;
+                background-color: #fff;
+
+                border-bottom: 1px solid #f1f1f1;
+                font-size: 13px;
+                display: block;
+
+                &:hover {
+                    background-color: #e8e8e8 !important;
+                    color: #000 !important;
+                }
+
+                &._selected {
+                    background-color: #f0f0f0 !important;
+                    font-weight: bold;
+                }
+            }
+
+            .admin__action-multiselect-search-wrap {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+
+                input.admin__control-text {
+                    width: 100% !important;
+                    height: 32px !important;
+                    border: 1px solid #ccc !important;
+                    padding: 0 10px;
+                    color: #333 !important;
+                }
+
+                label { display: none; }
+            }
+
+            .admin__action-multiselect-label {
+                display: block !important;
+                font-weight: normal;
+                padding: 5px;
+            }
+        }
+
+        .legal-address-short-field {
+            box-sizing: border-box;
+            float: left;
+            width: 25%;
+            padding-right: 10px;
+            clear: none !important;
+            margin-bottom: 20px;
+
+            @media (max-width: 768px) {
+                width: 50%;
+                &:nth-child(even) { padding-right: 0; }
+            }
+            .control input { width: 100%; }
+            &:last-child { padding-right: 0; }
+        }
+    }
+}

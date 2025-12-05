@@ -48,26 +48,25 @@ class PaymentInformationManagement
             $cuiValue = null;
             $companyValue = null;
 
-            // Extractie date (cod existent...)
             if (!empty($billingData['extension_attributes'])) {
                 $ext = $billingData['extension_attributes'];
                 $cuiValue = $ext['legal_cui'] ?? null;
                 $companyValue = $ext['legal_company'] ?? null;
             }
+
             if ((!$cuiValue || !$companyValue) && !empty($billingData['customAttributes'])) {
                 foreach ($billingData['customAttributes'] as $attr) {
-                    if (($attr['attribute_code']??'') === 'legal_cui') $cuiValue = $attr['value'];
-                    if (($attr['attribute_code']??'') === 'legal_company') $companyValue = $attr['value'];
+                    if (($attr['attribute_code'] ?? '') === 'legal_cui') $cuiValue = $attr['value'];
+                    if (($attr['attribute_code'] ?? '') === 'legal_company') $companyValue = $attr['value'];
                 }
             }
 
-            // MODIFICARE IMPORTANTA AICI: Fallback cu reincarcare
             if (!$cuiValue && !$companyValue) {
-                $this->logger->info('LegalPerson Billing: Trying copy from Shipping (Fresh Load)...');
+                $this->logger->info('LegalPerson Billing: Trying copy from Shipping...');
+
                 $quote = $this->cartRepository->getActive($cartId);
                 $shippingAddress = $quote->getShippingAddress();
 
-                // Daca avem ID la shipping, il incarcam din nou din DB pentru a fi siguri ca luam datele salvate
                 if ($shippingAddress->getId()) {
                     $freshShipping = $this->quoteAddressFactory->create()->load($shippingAddress->getId());
                     $cuiValue = $freshShipping->getData('legal_cui');
@@ -75,7 +74,7 @@ class PaymentInformationManagement
                 }
             }
 
-            $this->logger->info("LegalPerson Billing Values: " . ($cuiValue ?? 'NULL'));
+            $this->logger->info("LegalPerson Billing Values found: CUI=" . ($cuiValue ?? 'NULL'));
 
             if ($cuiValue || $companyValue) {
                 $quote = $this->cartRepository->getActive($cartId);
@@ -83,17 +82,20 @@ class PaymentInformationManagement
 
                 if ($quoteBillingAddress && $quoteBillingAddress->getId()) {
                     $realBillingModel = $this->quoteAddressFactory->create()->load($quoteBillingAddress->getId());
+
                     if ($realBillingModel->getId()) {
                         $realBillingModel->setData('legal_cui', $cuiValue);
                         $realBillingModel->setData('legal_company', $companyValue);
+
                         $this->addressResource->save($realBillingModel);
-                        $this->logger->info("LegalPerson Billing: SUCCESS.");
+                        $this->logger->info("LegalPerson Billing: SUCCESS - Saved to database.");
                     }
                 }
             }
         } catch (\Exception $e) {
             $this->logger->error('LegalPerson Billing CRITICAL: ' . $e->getMessage());
         }
+
         return $result;
     }
 }

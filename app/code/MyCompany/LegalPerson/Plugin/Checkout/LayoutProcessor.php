@@ -1,5 +1,4 @@
 <?php
-
 namespace MyCompany\LegalPerson\Plugin\Checkout;
 
 use MyCompany\LegalPerson\Helper\Data;
@@ -19,21 +18,18 @@ class LayoutProcessor
             return $jsLayout;
         }
 
-        // 1. Adaugam campurile in SHIPPING Address
         if (isset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
             ['children']['shippingAddress']['children']['shipping-address-fieldset']['children'])) {
 
             $shippingFields = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']
             ['children']['shippingAddress']['children']['shipping-address-fieldset']['children'];
 
-            $shippingCustomFields = $this->getFields('shippingAddress.custom_attributes', 'shippingAddress.custom_attributes');
+            $this->addAddressDetails($shippingFields, 'shippingAddress.custom_attributes');
 
-            foreach ($shippingCustomFields as $code => $field) {
-                $shippingFields[$code] = $field;
-            }
+            $this->convertCityToSelect($shippingFields, 'shippingAddress');
         }
 
-        // 2. Adaugam campurile in BILLING Address
+        // 2. Procesare Adresa de Facturare (Billing Address) pentru fiecare metoda de plata
         if (isset($jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']
             ['payment']['children']['payments-list']['children'])) {
 
@@ -41,78 +37,64 @@ class LayoutProcessor
             ['payment']['children']['payments-list']['children'];
 
             foreach ($paymentForms as $paymentMethodForm => $paymentMethodValue) {
-                // Verificare de siguranta pentru PHP 8
+                // Verificam daca metoda de plata are formular de adresa (unele nu au)
                 if (!isset($paymentMethodValue['children']['form-fields']['children'])) {
                     continue;
                 }
 
+                $billingFields = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']
+                ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']['form-fields']['children'];
+
                 $paymentCode = str_replace('-form', '', $paymentMethodForm);
                 $scope = 'billingAddress' . $paymentCode . '.custom_attributes';
-                $billingFields = $this->getFields($scope, $scope);
 
-                foreach ($billingFields as $code => $field) {
-                    $jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']
-                    ['payment']['children']['payments-list']['children'][$paymentMethodForm]['children']['form-fields']['children'][$code] = $field;
-                }
+                $this->addAddressDetails($billingFields, $scope);
+
+                $this->convertCityToSelect($billingFields, 'billingAddress' . $paymentCode);
             }
         }
 
         return $jsLayout;
     }
 
-    protected function getFields($dataScopePrefix, $customScope)
+    private function convertCityToSelect(&$fields, $scopePrefix)
     {
-        return [
-            'is_legal_checkbox' => [
-                'component' => 'MyCompany_LegalPerson/js/form/element/legal-checkbox',
+        if (isset($fields['city'])) {
+            $fields['city']['component'] = 'MyCompany_LegalPerson/js/form/element/city-select';
+            $fields['city']['config']['elementTmpl'] = 'ui/grid/filters/elements/ui-select';
+            $fields['city']['config']['filterOptions'] = true;
+            $fields['city']['sortOrder'] = 80;
+            $fields['city']['dataType'] = 'string';
+            $fields['city']['config']['additionalClasses'] = 'custom-city-dropdown';
+        }
+    }
+
+    private function addAddressDetails(&$fields, $dataScopePrefix)
+    {
+        $newFields = [
+            'street_number' => ['label' => 'Numar', 'sortOrder' => 71],
+            'building'      => ['label' => 'Bloc',  'sortOrder' => 72],
+            'floor'         => ['label' => 'Etaj',  'sortOrder' => 73],
+            'apartment'     => ['label' => 'Ap',    'sortOrder' => 74], // Label mai scurt
+        ];
+
+        foreach ($newFields as $code => $config) {
+            $fields[$code] = [
+                'component' => 'Magento_Ui/js/form/element/abstract',
                 'config' => [
-                    'customScope' => $customScope,
+                    'customScope' => $dataScopePrefix,
                     'template' => 'ui/form/field',
-                    'elementTmpl' => 'ui/form/element/checkbox',
-                    'id' => 'is_legal_checkbox',
-                    'description' => 'Persoana Juridica',
+                    'elementTmpl' => 'ui/form/element/input',
+                    // --- MODIFICARE AICI: Adăugăm o clasă CSS comună ---
+                    'additionalClasses' => 'legal-address-short-field',
                 ],
-                'dataScope' => $dataScopePrefix . '.is_legal_checkbox',
-                'label' => '',
+                'dataScope' => $dataScopePrefix . '.' . $code,
+                'label' => $config['label'],
                 'provider' => 'checkoutProvider',
                 'visible' => true,
                 'validation' => [],
-                'sortOrder' => 0,
-                'id' => 'is_legal_checkbox'
-            ],
-            'legal_company' => [
-                'component' => 'Magento_Ui/js/form/element/abstract',
-                'config' => [
-                    'customScope' => $customScope,
-                    'template' => 'ui/form/field',
-                    'elementTmpl' => 'ui/form/element/input',
-                ],
-                'dataScope' => $dataScopePrefix . '.legal_company',
-                'label' => 'Nume Companie',
-                'provider' => 'checkoutProvider',
-                'visible' => false,
-                'validation' => [
-                    'required-entry' => true,
-                    'min_text_length' => 3
-                ],
-                'sortOrder' => 40,
-            ],
-            'legal_cui' => [
-                'component' => 'Magento_Ui/js/form/element/abstract',
-                'config' => [
-                    'customScope' => $customScope,
-                    'template' => 'ui/form/field',
-                    'elementTmpl' => 'ui/form/element/input',
-                ],
-                'dataScope' => $dataScopePrefix . '.legal_cui',
-                'label' => 'CUI',
-                'provider' => 'checkoutProvider',
-                'visible' => false,
-                'validation' => [
-                    'required-entry' => true
-                ],
-                'sortOrder' => 41,
-            ]
-        ];
+                'sortOrder' => $config['sortOrder'],
+            ];
+        }
     }
 }

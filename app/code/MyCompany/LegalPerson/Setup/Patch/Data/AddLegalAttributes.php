@@ -26,7 +26,6 @@ class AddLegalAttributes implements DataPatchInterface
     {
         $customerSetup = $this->customerSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
-        // CUI
         $customerSetup->addAttribute('customer_address', 'legal_cui', [
             'label' => 'CUI',
             'input' => 'text',
@@ -34,11 +33,10 @@ class AddLegalAttributes implements DataPatchInterface
             'required' => false,
             'visible' => true,
             'system' => 0,
-            'user_defined' => true, // <--- LINIE NOUA CRITICA
+            'user_defined' => true,
             'position' => 150,
         ]);
 
-        // Nume Companie
         $customerSetup->addAttribute('customer_address', 'legal_company', [
             'label' => 'Nume Companie',
             'input' => 'text',
