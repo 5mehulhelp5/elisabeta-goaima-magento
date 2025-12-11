@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <!--        these have to match exactly the ids from system.xml-->
+        <payment>
+            <simplepay>
+                <!--  by default is disabled -->
+                <active>0</active>
+                <!--  when this payment method is requested use this model-->
+                <model>MyCompanySimplePayFacade</model>
+                <title>Simple Pay</title>
+
+                <can_use_checkout>1</can_use_checkout>
+                <can_authorize>0</can_authorize>
+                <can_capture>0</can_capture>
+                <can_order>1</can_order>
+
+                <is_gateway>0</is_gateway>
+                <sort_order>1</sort_order>
+
+                <!--available to all countries-->
+                <allowspecific>0</allowspecific>
+
+                <!--                the order happens first and payment later, we don't need to connect to an external server-->
+                <group>offline</group>
+
+                <order_status>waiting_simple_pay</order_status>
+            </simplepay>
+        </payment>
+    </default>
+</config>

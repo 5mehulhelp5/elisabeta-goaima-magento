@@ -29,7 +29,7 @@ $getAttrVal = function($code) use ($block) {
         <div class="field legal-field" style="display: none;">
             <label class="label" for="legal_company"><span><?= $block->escapeHtml(__('Company Name')) ?></span></label>
             <div class="control">
-                <input type="text" name="legal_company" id="legal_company" value="<?= $block->escapeHtmlAttr($company) ?>" title="Nume Companie" class="input-text">
+                <input type="text" name="legal_company" id="legal_company" value="<?= $block->escapeHtmlAttr($company) ?>" title="Company Name" class="input-text">
             </div>
         </div>
 
@@ -87,25 +87,25 @@ $getAttrVal = function($code) use ($block) {
 
         <div class="field additional-details">
             <div class="field legal-address-short-field">
-                <label class="label" for="street_number"><span><?= $block->escapeHtml(__('Numar')) ?></span></label>
+                <label class="label" for="street_number"><span><?= $block->escapeHtml(__('Number')) ?></span></label>
                 <div class="control">
                     <input type="text" name="street_number" id="street_number" value="<?= $getAttrVal('street_number') ?>" title="<?= $block->escapeHtmlAttr(__('Numar')) ?>" class="input-text">
                 </div>
             </div>
             <div class="field legal-address-short-field">
-                <label class="label" for="building"><span><?= $block->escapeHtml(__('Bloc')) ?></span></label>
+                <label class="label" for="building"><span><?= $block->escapeHtml(__('Building')) ?></span></label>
                 <div class="control">
                     <input type="text" name="building" id="building" value="<?= $getAttrVal('building') ?>" title="<?= $block->escapeHtmlAttr(__('Bloc')) ?>" class="input-text">
                 </div>
             </div>
             <div class="field legal-address-short-field">
-                <label class="label" for="floor"><span><?= $block->escapeHtml(__('Etaj')) ?></span></label>
+                <label class="label" for="floor"><span><?= $block->escapeHtml(__('Floor')) ?></span></label>
                 <div class="control">
                     <input type="text" name="floor" id="floor" value="<?= $getAttrVal('floor') ?>" title="<?= $block->escapeHtmlAttr(__('Etaj')) ?>" class="input-text">
                 </div>
             </div>
             <div class="field legal-address-short-field">
-                <label class="label" for="apartment"><span><?= $block->escapeHtml(__('Apartament')) ?></span></label>
+                <label class="label" for="apartment"><span><?= $block->escapeHtml(__('Apartment')) ?></span></label>
                 <div class="control">
                     <input type="text" name="apartment" id="apartment" value="<?= $getAttrVal('apartment') ?>" title="<?= $block->escapeHtmlAttr(__('Apartament')) ?>" class="input-text">
                 </div>
@@ -191,7 +191,6 @@ $getAttrVal = function($code) use ($block) {
         var form = $('#form-validate');
         form.mage('validation', {});
 
-        // === LEGAL ENTITY LOGIC ===
         var checkbox = $('#is_legal_checkbox');
         var legalFields = $('.legal-field');
         var legalInputs = $('.legal-field input');
@@ -210,7 +209,6 @@ $getAttrVal = function($code) use ($block) {
                 legalFields.show();
                 legalInputs.addClass('required-entry');
 
-                // Ascundem campurile standard irelevante
                 firstnameContainer.hide();
                 lastnameContainer.hide();
                 companyContainer.hide();

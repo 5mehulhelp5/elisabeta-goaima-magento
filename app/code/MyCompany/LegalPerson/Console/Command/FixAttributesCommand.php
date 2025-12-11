@@ -28,13 +28,11 @@ class FixAttributesCommand extends Command
     protected function configure()
     {
         $this->setName('legalperson:fix:attributes')
-            ->setDescription('Repara atributele de adresa (assign to set, forms)');
+            ->setDescription('Fix address attributes');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Inceperea reparatiei atributelor...</info>');
-
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
         $entityTypeId = $eavSetup->getEntityTypeId('customer_address');
@@ -68,16 +66,11 @@ class FixAttributesCommand extends Command
                 $attribute->setData('is_user_defined', 1);
                 $attribute->setData('is_system', 0);
                 $attribute->setData('is_visible', 1);
-
                 $attribute->save();
 
-                $output->writeln("<info>Atribut reparat: $code</info>");
-            } else {
-                $output->writeln("<error>Atributul $code nu a fost gasit!</error>");
             }
         }
 
-        $output->writeln('<info>GATA! Curata cache-ul acum.</info>');
         return 0;
     }
 }

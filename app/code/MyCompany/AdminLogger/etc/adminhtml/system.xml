@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <!--  translate="label" =>  if a translation exists for this label it should be used-->
         <tab id="custom_tab"
              translate="label"
-             sortOrder="100">
+             sortOrder="100000">
             <label>Custom Extensions</label>
         </tab>
-        <section id="admin_logger" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+        <section id="admin_logger" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
             <label>Admin Action Logger</label>
             <tab>custom_tab</tab>
             <resource>MyCompany_AdminLogger::config</resource>

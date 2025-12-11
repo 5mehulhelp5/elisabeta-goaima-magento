@@ -27,10 +27,12 @@ class AddAddressDetailsAttributes implements DataPatchInterface
         $customerSetup = $this->customerSetupFactory->create(['setup' => $this->moduleDataSetup]);
 
         $attributes = [
-            'street_number' => 'Numar',
-            'building'      => 'Bloc',
-            'floor'         => 'Etaj',
-            'apartment'     => 'Apartament'
+            'legal_cui'     => 'CUI',
+            'legal_company' => 'Company Name',
+            'street_number' => 'Number',
+            'building'      => 'Building',
+            'floor'         => 'Floor',
+            'apartment'     => 'Apartment',
         ];
 
         $attributeSetId = $customerSetup->getDefaultAttributeSetId('customer_address');

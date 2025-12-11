@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="MyCompanySimplePayFacade" type="Magento\Payment\Model\Method\Adapter">
+        <arguments>
+<!--            the name-->
+            <argument name="code" xsi:type="string">simplepay</argument>
+<!--            used in admin in create new order-->
+            <argument name="formBlockType" xsi:type="string">Magento\Payment\Block\Form</argument>
+<!--            info block used in email confirmations, view order in admin, my orders, invoice-->
+            <argument name="infoBlockType" xsi:type="string">Magento\Payment\Block\Info</argument>
+<!--            who reads the settings-->
+            <argument name="valueHandlerPool" xsi:type="object">MyCompanySimplePayValueHandlerPool</argument>
+<!--            restrictions -->
+            <argument name="validatorPool" xsi:type="object">MyCompanySimplePayValidatorPool</argument>
+            <argument name="commandPool" xsi:type="object">MyCompanySimplePayCommandPool</argument>
+        </arguments>
+    </virtualType>
+
+<!--    used for reading the settings from etc/system.xml-->
+    <virtualType name="MyCompanySimplePayValueHandlerPool" type="Magento\Payment\Gateway\Config\ValueHandlerPool">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+<!--                for any setting use this-->
+                <item name="default" xsi:type="string">MyCompanySimplePayConfigValueHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompanySimplePayConfigValueHandler" type="Magento\Payment\Gateway\Config\ConfigValueHandler">
+        <arguments>
+            <!--            knows to look in core_config_data table afer payment/simplepay/...-->
+            <argument name="configInterface" xsi:type="object">MyCompanySimplePayConfig</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompanySimplePayConfig" type="Magento\Payment\Gateway\Config\Config">
+        <arguments>
+            <argument name="methodCode" xsi:type="string">simplepay</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompanySimplePayValidatorPool" type="Magento\Payment\Gateway\Validator\ValidatorPool">
+        <arguments>
+            <argument name="validators" xsi:type="array">
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompanySimplePayCommandPool" type="Magento\Payment\Gateway\Command\CommandPool">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="authorize" xsi:type="string">MyCompanySimplePayCommand</item>
+                <item name="capture" xsi:type="string">MyCompanySimplePayCommand</item>
+                <item name="void" xsi:type="string">MyCompanySimplePayCommand</item>
+                <item name="order" xsi:type="string">MyCompanySimplePayCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompanySimplePayCommand" type="Magento\Payment\Gateway\Command\NullCommand" />
+
+</config>

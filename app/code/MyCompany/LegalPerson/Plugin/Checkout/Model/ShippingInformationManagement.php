@@ -3,9 +3,9 @@ namespace MyCompany\LegalPerson\Plugin\Checkout\Model;
 
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
 use Magento\Checkout\Model\ShippingInformationManagement as Subject;
+use Magento\Framework\Webapi\Rest\Request;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\ResourceModel\Quote\Address as AddressResource;
-use Magento\Framework\Webapi\Rest\Request;
 use Psr\Log\LoggerInterface;
 
 class ShippingInformationManagement
@@ -29,8 +29,8 @@ class ShippingInformationManagement
 
     public function afterSaveAddressInformation(
         Subject $subject,
-                $result,
-                $cartId,
+        $result,
+        $cartId,
         ShippingInformationInterface $addressInformation
     ) {
         $this->logger->info('LegalPerson: START processing CartID ' . $cartId);
@@ -79,7 +79,8 @@ class ShippingInformationManagement
         return $result;
     }
 
-    private function findValueRecursive($array, $keySearch) {
+    private function findValueRecursive($array, $keySearch)
+    {
         if (!is_array($array)) {
             return null;
         }

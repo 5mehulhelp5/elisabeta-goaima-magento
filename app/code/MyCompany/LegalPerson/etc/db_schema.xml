@@ -4,8 +4,8 @@
         <column xsi:type="varchar" name="legal_cui" nullable="true" length="255" comment="Legal CUI"/>
         <column xsi:type="varchar" name="legal_company" nullable="true" length="255" comment="Legal Company"/>
         <column xsi:type="varchar" name="street_number" nullable="true" length="255" comment="Street Number"/>
-        <column xsi:type="varchar" name="building" nullable="true" length="255" comment="Building (Bloc)"/>
-        <column xsi:type="varchar" name="floor" nullable="true" length="255" comment="Floor (Etaj)"/>
+        <column xsi:type="varchar" name="building" nullable="true" length="255" comment="Building"/>
+        <column xsi:type="varchar" name="floor" nullable="true" length="255" comment="Floor"/>
         <column xsi:type="varchar" name="apartment" nullable="true" length="255" comment="Apartment"/>
     </table>
 
@@ -13,8 +13,8 @@
         <column xsi:type="varchar" name="legal_cui" nullable="true" length="255" comment="Legal CUI"/>
         <column xsi:type="varchar" name="legal_company" nullable="true" length="255" comment="Legal Company"/>
         <column xsi:type="varchar" name="street_number" nullable="true" length="255" comment="Street Number"/>
-        <column xsi:type="varchar" name="building" nullable="true" length="255" comment="Building (Bloc)"/>
-        <column xsi:type="varchar" name="floor" nullable="true" length="255" comment="Floor (Etaj)"/>
+        <column xsi:type="varchar" name="building" nullable="true" length="255" comment="Building"/>
+        <column xsi:type="varchar" name="floor" nullable="true" length="255" comment="Floor"/>
         <column xsi:type="varchar" name="apartment" nullable="true" length="255" comment="Apartment"/>
     </table>
 

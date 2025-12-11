@@ -3,6 +3,9 @@ namespace MyCompany\LegalPerson\Plugin\Checkout;
 
 use MyCompany\LegalPerson\Helper\Data;
 
+// plugin class that modifies the structure of the checkout ui to integrate custom fields
+// this plugin is hooked by frontend/di.xml
+// we intercept the jsLayout (which is a json object which defines ui components) and before it is sent to the browser we add some fields
 class LayoutProcessor
 {
     protected $helper;
@@ -12,8 +15,10 @@ class LayoutProcessor
         $this->helper = $helper;
     }
 
+    // this is going to be executed after the initial layout is built
     public function afterProcess(\Magento\Checkout\Block\Checkout\LayoutProcessor $subject, $jsLayout)
     {
+        // if disabled we return the original layout
         if (!$this->helper->isEnabled()) {
             return $jsLayout;
         }
@@ -37,6 +42,7 @@ class LayoutProcessor
             $paymentForms = $jsLayout['components']['checkout']['children']['steps']['children']['billing-step']['children']
             ['payment']['children']['payments-list']['children'];
 
+            // we have to loop through all payments methods because the billing is nested under each payment form
             foreach ($paymentForms as $paymentMethodForm => $paymentMethodValue) {
                 if (!isset($paymentMethodValue['children']['form-fields']['children'])) {
                     continue;
@@ -64,13 +70,14 @@ class LayoutProcessor
     {
         $legalFields = [
             'is_legal_checkbox' => [
+                // view/frontend/web is implicitly prepended by magento
                 'component' => 'MyCompany_LegalPerson/js/form/element/legal-checkbox',
                 'config' => [
                     'customScope' => $customScope,
                     'template' => 'ui/form/field',
                     'elementTmpl' => 'ui/form/element/checkbox',
                     'id' => 'is_legal_checkbox',
-                    'description' => 'Persoana Juridica',
+                    'description' => 'Legal Person',
                 ],
                 'dataScope' => $dataScopePrefix . '.is_legal_checkbox',
                 'label' => '',
@@ -122,9 +129,9 @@ class LayoutProcessor
     private function addAddressDetails(&$fields, $dataScopePrefix)
     {
         $newFields = [
-            'street_number' => ['label' => 'Numar', 'sortOrder' => 71],
-            'building'      => ['label' => 'Bloc',  'sortOrder' => 72],
-            'floor'         => ['label' => 'Etaj',  'sortOrder' => 73],
+            'street_number' => ['label' => 'Number', 'sortOrder' => 71],
+            'building'      => ['label' => 'Building',  'sortOrder' => 72],
+            'floor'         => ['label' => 'Floor',  'sortOrder' => 73],
             'apartment'     => ['label' => 'Ap',    'sortOrder' => 74],
         ];
 

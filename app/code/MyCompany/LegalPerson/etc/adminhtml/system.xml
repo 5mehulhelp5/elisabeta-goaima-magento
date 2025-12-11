@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
+<!--adds a new setting in the configurations admin dash which is used to activate/deactivate this functionality-->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="mycompany_tab" translate="label" sortOrder="10">
-            <label>MyCompany Settings</label>
-        </tab>
         <section id="legalperson_config" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Legal Person Checkout</label>
-            <tab>mycompany_tab</tab>
+            <tab>custom_tab</tab>
+<!--            requests access to this resource-->
             <resource>MyCompany_LegalPerson::config</resource>
             <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>

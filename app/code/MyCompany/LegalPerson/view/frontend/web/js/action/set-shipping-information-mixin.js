@@ -11,6 +11,7 @@ define([
         }
     }
 
+    // we ensure that when the customer proceeds from the shipping step to the payment step that the request to backend has the custom data
     return function (setShippingInformationAction) {
         return wrapper.wrap(setShippingInformationAction, function (originalAction) {
             var shippingAddress = quote.shippingAddress();
@@ -54,11 +55,6 @@ define([
 
             if (billingAddress) {
                 normalizeCity(billingAddress);
-            }
-
-            console.log('Shipping City cleaned:', shippingAddress.city);
-            if (billingAddress) {
-                console.log('Billing City cleaned:', billingAddress.city);
             }
 
             quote.shippingAddress(shippingAddress);

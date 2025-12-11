@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
     <scope id="global">
+<!--        defines the mapping for the conversion from a quote address to an order address object -->
         <fieldset id="sales_convert_quote_address">
             <field name="legal_cui">
                 <aspect name="to_order_address" />
@@ -22,6 +23,7 @@
             </field>
         </fieldset>
 
+<!--        the conversion from a saved address of a registered customer to a shopping cart address-->
         <fieldset id="customer_address">
             <field name="legal_cui">
                 <aspect name="to_quote_address" />

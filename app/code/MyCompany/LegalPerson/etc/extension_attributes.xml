@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+<!--    without this file the custom fileds would have never reached backend and be processed-->
     <extension_attributes for="Magento\Customer\Api\Data\AddressInterface">
         <attribute code="legal_cui" type="string" />
         <attribute code="legal_company" type="string" />
@@ -9,6 +10,7 @@
         <attribute code="apartment" type="string" />
     </extension_attributes>
 
+<!--    this attributes belong to the file named in for-->
     <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
         <attribute code="legal_cui" type="string" />
         <attribute code="legal_company" type="string" />

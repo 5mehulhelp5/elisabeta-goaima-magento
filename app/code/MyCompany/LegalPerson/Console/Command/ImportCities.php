@@ -2,9 +2,11 @@
 namespace MyCompany\LegalPerson\Console\Command;
 
 use Magento\Directory\Model\RegionFactory;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\File\Csv;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +41,7 @@ class ImportCities extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $this->state->setAreaCode(\Magento\Framework\App\Area::AREA_GLOBAL);
+            $this->state->setAreaCode(Area::AREA_GLOBAL);
 
             $output->writeln('<info>Starting import...</info>');
 
@@ -98,6 +100,9 @@ class ImportCities extends Command
         }
     }
 
+    /**
+     * @throws LocalizedException
+     */
     private function getRoRegions()
     {
         $regionCollection = $this->regionFactory->create()->getCollection()
