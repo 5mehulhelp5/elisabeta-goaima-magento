@@ -1,0 +1,14 @@
+{
+    "quote": {
+        "column": {
+            "pickup_store": true,
+            "pickup_time": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "pickup_store": true,
+            "pickup_time": true
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<div class="store-pickup-container" data-bind="visible: isMethodSelected">
+    <div class="field">
+        <label class="label">Select Store</label>
+        <div class="control">
+            <select data-bind="options: availableStores, value: selectedStore, optionsCaption: 'Choose a store...'"></select>
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Select Time Slot (Optional)</label>
+        <div class="control">
+            <select data-bind="options: availableSlots, value: selectedSlot, optionsCaption: 'Choose a time...'"></select>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Config:etc/system_file.xsd">
+    <system>
+        <section id="carriers">
+            <group id="storepickup" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Store Pickup with Time Slots</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+
+                <field id="price" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Price</label>
+                </field>
+
+                <field id="free_shipping_subtotal" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Free Shipping Threshold</label>
+                    <comment>Order subtotal to qualify for free pickup.</comment>
+                </field>
+
+                <field id="stores" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Available Stores</label>
+                    <comment>Enter one store per line.</comment>
+                </field>
+
+                <field id="time_slots" translate="label" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Time Slots</label>
+                    <comment>Enter one time slot per line (e.g., 09:00 - 12:00).</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

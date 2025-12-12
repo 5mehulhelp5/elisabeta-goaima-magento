@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!-- this class expects an array od config providers -->
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+<!--                inject the custom clas into the collection of existing providers-->
+                <item name="mycompany_storepickup_config" xsi:type="object">MyCompany\StorePickup\Model\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
