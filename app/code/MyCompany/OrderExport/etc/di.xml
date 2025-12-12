@@ -7,4 +7,13 @@
             </argument>
         </arguments>
     </virtualType>
+
+    <type name="MyCompany\OrderExport\Model\Export\JsonDataBuilder">
+        <arguments>
+            <argument name="strategies" xsi:type="array">
+                <item name="standard" xsi:type="object">MyCompany\OrderExport\Model\Export\Strategy\Standard</item>
+                <item name="detailed" xsi:type="object">MyCompany\OrderExport\Model\Export\Strategy\Detailed</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

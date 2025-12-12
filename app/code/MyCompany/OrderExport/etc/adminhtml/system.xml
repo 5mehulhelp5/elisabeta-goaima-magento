@@ -32,6 +32,12 @@
                     <label>Remote Path</label>
                     <comment>Folder path on server (e.g. /exports/orders/)</comment>
                 </field>
+
+                <field id="format_version" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Export Format Version</label>
+                    <source_model>MyCompany\OrderExport\Model\Config\Source\FormatVersion</source_model>
+                    <comment>Select the JSON structure version.</comment>
+                </field>
             </group>
         </section>
     </system>
