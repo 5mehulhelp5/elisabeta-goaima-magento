@@ -1,0 +1,17 @@
+<div id="warranty-request-app" data-bind="scope: 'warranty-form-scope'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#warranty-request-app": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "warranty-form-scope": {
+                        "component": "js/view/warranty-form"
+                    }
+                }
+            }
+        }
+    }
+</script>

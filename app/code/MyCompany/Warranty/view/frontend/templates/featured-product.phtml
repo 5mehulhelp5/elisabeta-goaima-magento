@@ -1,0 +1,27 @@
+<?php
+/** @var \MyCompany\Warranty\Block\FeaturedProduct $block */
+$productSku = 'MJ02';
+$productData = $block->getProductData($productSku);
+?>
+
+<?php if ($productData): ?>
+    <div id="featured-product-widget" data-bind="scope: 'featured-product-scope'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+
+    <script type="text/x-magento-init">
+        {
+            "#featured-product-widget": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "featured-product-scope": {
+                            "component": "js/view/featured-product",
+                            "productConfig": <?= json_encode($productData) ?>
+        }
+    }
+}
+}
+}
+    </script>
+<?php endif; ?>
+

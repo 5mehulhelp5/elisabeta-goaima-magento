@@ -22,7 +22,18 @@
                    name="discount.calculator"
                    template="Magento_Cms::calculator.phtml"
                    before="-"/>
+
+            <block class="Magento\Framework\View\Element\Template"
+                   name="warranty.form"
+                   template="Magento_Cms::warranty.phtml"
+                   after="discount.calculator"/>
+
+            <block class="MyCompany\Warranty\Block\FeaturedProduct"
+                   name="featured.product.widget"
+                   template="MyCompany_Warranty::featured-product.phtml"
+                   after="warranty.form"/>
         </referenceContainer>
+
     </body>
 </page>
 <!--

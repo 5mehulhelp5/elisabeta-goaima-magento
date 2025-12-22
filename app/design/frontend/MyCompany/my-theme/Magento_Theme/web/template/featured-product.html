@@ -1,0 +1,28 @@
+<div class="featured-product-widget" style="border: 1px solid #eee; padding: 20px; max-width: 300px; text-align: center; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+
+    <div class="badge" style="background: #ff5722; color: white; display: inline-block; padding: 4px 8px; font-size: 11px; font-weight: bold; border-radius: 4px; margin-bottom: 10px;">
+        DEAL OF THE DAY
+    </div>
+
+    <img data-bind="attr: { src: currentImage }" style="max-width: 100%; height: auto; margin-bottom: 15px;" />
+
+    <h3 data-bind="text: productName" style="font-size: 16px; margin: 0 0 10px;"></h3>
+
+    <div class="price-box" style="margin-bottom: 15px;">
+        <span style="font-size: 20px; font-weight: bold; color: #333;" data-bind="text: currentPrice"></span>
+        <span style="font-size: 14px;">RON</span>
+    </div>
+
+    <div class="options" style="margin-bottom: 20px;">
+        <label style="font-weight: bold; display: block; margin-bottom: 5px;">Size:</label>
+        <select data-bind="event: { change: onVariantChange }, foreach: variants" style="width: 100%; padding: 8px;">
+            <option data-bind="value: id, text: size_label"></option>
+        </select>
+    </div>
+
+    <button class="action primary"
+            data-bind="click: addToCart, attr: { disabled: isProcessing }"
+            style="width: 100%;">
+        <span data-bind="text: buttonLabel"></span>
+    </button>
+</div>
